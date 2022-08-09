@@ -1,0 +1,48 @@
+CREATE TABLE IF NOT EXISTS USER_INFO (
+	username TEXT PRIMARY KEY,
+	password TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS PROJECT (
+	id SERIAL PRIMARY KEY,
+	name TEXT NOT NULL,
+	description VARCHAR(30),
+	project_owner TEXT REFERENCES USER_INFO(username) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS LABEL (
+	id INT PRIMARY KEY,
+	name TEXT NOT NULL CHECK(name = 'defect' OR name = 'new-functionality' OR name = 'exploration')
+);
+
+CREATE TABLE IF NOT EXISTS STATE (
+	id INT PRIMARY KEY,
+	name TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS ISSUE (
+	id SERIAL,
+	name TEXT NOT NULL,
+	description VARCHAR(30),
+	created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	closed TIMESTAMP,
+	state_id INT REFERENCES STATE(id),
+	project_id INT REFERENCES PROJECT(id) ON DELETE CASCADE,
+    label_id INT REFERENCES LABEL(id),
+    issue_owner TEXT REFERENCES USER_INFO(username) ON DELETE CASCADE,
+	CHECK (closed >= created),
+	PRIMARY KEY(id, project_id)
+);
+
+CREATE TABLE IF NOT EXISTS COMMENT (
+	id SERIAL,
+	ttext TEXT NOT NULL,
+	created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	project_id INT,
+	issue_id INT,
+    comment_owner TEXT REFERENCES USER_INFO(username) ON DELETE CASCADE,
+    FOREIGN KEY(issue_id,project_id) REFERENCES ISSUE(id,project_id) ON DELETE CASCADE,
+	PRIMARY KEY(id,issue_id,project_id)
+);
+
+
