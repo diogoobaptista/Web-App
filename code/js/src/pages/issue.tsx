@@ -48,12 +48,6 @@ type IdParams = {
   issueId: string;
 };
 
-const defaultComments = {
-  projectId: '',
-  issueId: '',
-  comments: Array() as Array<any>,
-}
-
 const Issue = () => {
   const classes = useStyles();
   const history = useHistory();
@@ -63,7 +57,7 @@ const Issue = () => {
   const defaultIssue = useSelector((state: any) => state.issueDetails.issue)
   const [issue, setIssue] = useState(defaultIssue)
   const [issueOriginal, setIssueOriginal] = useState(defaultIssue)
-  const [comments, setComments] = useState({ ...defaultComments, projectId: id, issueId: issueId })
+  const projetctId = useSelector((state: any) => state.projectDetails.project.projectId)
 
   function getComments() {
     apiCall(`http://localhost:9090/api/projects/${id}/issues/${issueId}/comments`, {
@@ -76,8 +70,8 @@ const Issue = () => {
     }, false).then(res => {
       return res.json()
     }).then(json => {
-      setComments(json)
-      dispatch(getCommentsAction(json))
+      console.log(json)
+      dispatch(getCommentsAction(json.comments))
     })
   }
 
@@ -182,6 +176,8 @@ const Issue = () => {
     }
   }, [dialogOpen]);
 
+  console.log(issueOriginal)
+
   return (
     <div>
       <Grid container spacing={1} direction={'column'}>
@@ -265,9 +261,8 @@ const Issue = () => {
                 </Button>
               </Stack>
               <CommentBox
-                comments={comments.comments}
-                projectId={comments.projectId}
-                issueId={comments.issueId}
+                projectId={projetctId}
+                issueId={issueOriginal.id}
                 open={dialogOpen}
                 dialogChange={(value: boolean) => setDialogOpen(value)}
                 issueState={issueOriginal.state}

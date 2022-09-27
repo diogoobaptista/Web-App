@@ -14,10 +14,11 @@ import CreateCommentDialog from '../components/CreateCommentDialog';
 import { getUsername } from '../utils';
 import classNames from 'classnames'
 import Comment from './Comment';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteCommentsAction } from '../actions/commentsActions';
 
 
 export interface CommentBox {
-    comments: any;
     projectId: string;
     issueId: string;
     open: any;
@@ -53,11 +54,17 @@ const useStyles = makeStyles(() => ({
 }))
 
 
-const CommentBox: React.FC<CommentBox> = ({ comments, projectId, issueId, open, dialogChange, issueState }) => {
+const CommentBox: React.FC<CommentBox> = ({ projectId, issueId, open, dialogChange, issueState }) => {
     const classes = useStyles();
     const history = useHistory();
+    const dispatch = useDispatch();
+    const comments = useSelector((state: any) => state.commentsDetails.comments)
+    console.log(comments)
 
-
+    function onDelete(comment: any) {
+        dispatch(deleteCommentsAction(comments.filter((value: any) => value.commentId !== comment)))
+    }
+    console.log(issueId)
     return (
         <div style={{ padding: 14 }} className="App">
             <Typography variant="h6">
@@ -85,13 +92,14 @@ const CommentBox: React.FC<CommentBox> = ({ comments, projectId, issueId, open, 
                 </Stack>
             </Grid>
             <Paper className={classes.commentBoxPaper}>
-                {comments.map((comment: any) => {
+                {comments && comments.map((comment: any) => {
                     return (
                         <Comment
                             commt={comment}
                             projectId={projectId}
                             issueId={issueId}
                             issueState={issueState}
+                            onDelete={(comment: any) => onDelete(comment)}
                         />
                     )
                 }

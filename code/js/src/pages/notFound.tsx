@@ -10,6 +10,7 @@ import InfoIcon from '@material-ui/icons/Info'
 import Callout from '../components/Callout';
 import PageInfo from '../enum/PageInfo';
 import Header from '../components/Header';
+import HeaderCreate from '../components/HeaderCreate';
 
 
 const useStyles = makeStyles(() => ({
@@ -38,6 +39,7 @@ const NotFound = () => {
                 <Stack direction="row">
                     <SideBarMenu selected='/home' />
                     <Grid item md={12} className={classes.layout}>
+                        <HeaderCreate name="My Name is Test"></HeaderCreate>
                         <Typography variant="h4">
                             NotFound
                         </Typography>

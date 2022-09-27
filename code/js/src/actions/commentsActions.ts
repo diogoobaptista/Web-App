@@ -8,6 +8,13 @@ export const getCommentsAction = (projects: any) => {
     }
 }
 
+export const deleteCommentsAction = (projects: any) => {
+    return {
+        type: ActionTypes.DELETE_COMMENTS,
+        payload: projects
+    }
+}
+
 export const addCommentAction = (comment: any) => {
     return {
         type: ActionTypes.ADD_COMMENT,

@@ -10,6 +10,8 @@ export const commentsReducer = (state = initialState, { type, payload }) => {
             return { ...state, comments: payload };
         case ActionTypes.ADD_COMMENT:
             return { ...state, comments: { ...comments, payload } };
+        case ActionTypes.DELETE_COMMENTS:
+            return { ...state, comments: payload };
         default:
             return state;
     }

@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "@babel/plugin-syntax-jsx": "^7.18.6",
+    "@babel/preset-react": "^7.18.6",
+    "@testing-library/jest-dom": "^5.16.5",
+    "jest": "^28.1.3"
+  }
+}

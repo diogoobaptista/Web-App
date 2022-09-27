@@ -25,6 +25,7 @@ const defaultValue = {
 const CreateCommentDialog: React.FC<CreateCommentDialog> = ({ open, onClose, projectId, issueId }) => {
     const [value, setValue] = useState(defaultValue)
     const dispatch = useDispatch();
+    console.log(issueId)
     const handleSave = () => {
         const endpoint = `http://localhost:9090/api/projects/${projectId}/issues/${issueId}/comments`
         const body = JSON.stringify(value);

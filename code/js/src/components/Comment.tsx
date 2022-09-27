@@ -1,19 +1,17 @@
 import React, {
-    useState, useEffect
+    useState
 } from 'react'
-import { apiCall, getCookie } from '../utils';
+import { apiCall } from '../utils';
 import IconButton from '@mui/material/IconButton';
 import Delete from '@material-ui/icons/Delete'
 import { useHistory } from "react-router-dom";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import AddIcon from '@material-ui/icons/Add'
-import { Divider, makeStyles, Grid, Paper, Typography } from "@material-ui/core";
+import { Divider, makeStyles, Grid } from "@material-ui/core";
 import Stack from '@mui/material/Stack';
-import CreateCommentDialog from '../components/CreateCommentDialog';
 import { getUsername } from '../utils';
-import { useDispatch, useSelector } from 'react-redux';
-import { getCommentAction, editCommentAction, deleteCommentAction } from '../actions/commentActions';
+import { useDispatch } from 'react-redux';
+import { editCommentAction } from '../actions/commentActions';
 
 import classNames from 'classnames'
 
@@ -23,6 +21,7 @@ export interface Comment {
     projectId: string;
     issueId: string;
     issueState: string;
+    onDelete: (comment: any) => void;
 }
 
 const useStyles = makeStyles(() => ({
@@ -53,7 +52,7 @@ const useStyles = makeStyles(() => ({
 }))
 
 
-const Comment: React.FC<Comment> = ({ commt, projectId, issueId, issueState }) => {
+const Comment: React.FC<Comment> = ({ commt, projectId, issueId, issueState, onDelete }) => {
     const classes = useStyles();
     const history = useHistory();
     const [comment, setComment] = useState(commt)
@@ -94,8 +93,7 @@ const Comment: React.FC<Comment> = ({ commt, projectId, issueId, issueState }) =
             credentials: 'include',
             mode: 'cors'
         }, false)
-        dispatch(deleteCommentAction())
-        history.push(`/project/${projectId}/issue/${issueId}`)
+        onDelete(comment.commentId)
     }
 
     return (
